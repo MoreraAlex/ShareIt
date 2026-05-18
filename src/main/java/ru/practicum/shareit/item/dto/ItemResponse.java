@@ -1,10 +1,11 @@
-package ru.practicum.shareit.request;
+package ru.practicum.shareit.item.dto;
 
 import lombok.Data;
 
 @Data
-public class ItemRequest {
+public class ItemResponse {
     private Long id;
     private String name;
     private String description;
+    private Boolean available;
 }
