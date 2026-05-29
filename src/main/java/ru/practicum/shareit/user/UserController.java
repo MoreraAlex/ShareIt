@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.user.dto.CreateUserRequest;
 import ru.practicum.shareit.user.dto.UpdateUserRequest;
+import ru.practicum.shareit.user.dto.UserDto;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -23,24 +24,24 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
+    public UserDto getUser(@PathVariable Long id) {
         log.info("UserController: получен запрос на получение пользователя по id={}", id);
-        return userService.getUserById(id);
+        return UserMapper.mapUserToDto(userService.getUserById(id));
     }
 
     @PostMapping
-    public User createUser(@RequestBody @Valid CreateUserRequest userData) {
+    public UserDto createUser(@RequestBody @Valid CreateUserRequest userData) {
         log.info("UserController: получен запрос на добавление пользователя {}", userData);
-        return userService.createUser(userData);
+        return UserMapper.mapUserToDto(userService.createUser(userData));
     }
 
     @PatchMapping("/{id}")
-    public User updateUser(
+    public UserDto updateUser(
             @PathVariable Long id,
             @RequestBody @Valid UpdateUserRequest userData
     ) {
         log.info("UserController: получен запрос на обновление данных пользователя (id={}) {}", id, userData);
-        return userService.updateUser(id, userData);
+        return UserMapper.mapUserToDto(userService.updateUser(id, userData));
     }
 
     @DeleteMapping("/{id}")
