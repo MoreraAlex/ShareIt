@@ -1,8 +1,6 @@
 package ru.practicum.shareit.item;
 
-import ru.practicum.shareit.item.dto.ItemCreateRequest;
-import ru.practicum.shareit.item.dto.ItemResponse;
-import ru.practicum.shareit.item.dto.ItemUpdateRequest;
+import ru.practicum.shareit.item.dto.*;
 
 import java.util.Collection;
 
@@ -12,10 +10,12 @@ public interface ItemService {
 
     ItemResponse updateItem(Long userId, Long itemId, ItemUpdateRequest itemData);
 
-    ItemResponse getItemById(Long itemId);
+    ItemResponseFull getItemById(Long userId, Long itemId);
 
-    Collection<ItemResponse> getItemsByOwner(Long userId);
+    Collection<ItemResponseFull> getItemsByOwner(Long userId);
 
     Collection<ItemResponse> searchForItems(String text);
+
+    CommentResponse createComment(Long authorId, Long itemId, CommentCreateRequest commentData);
 
 }
