@@ -22,7 +22,7 @@ public class ItemUpdateRequest {
         return description != null;
     }
 
-    public boolean hasAvailavle() {
+    public boolean hasAvailable() {
         return available != null;
     }
 }

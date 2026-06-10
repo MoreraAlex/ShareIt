@@ -10,31 +10,33 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.shareit.user.User;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "items")
+@Table(name = "comments")
 @Getter
 @Setter
-@RequiredArgsConstructor
-public class Item {
+@NoArgsConstructor
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "item_id", nullable = false)
+    private Long itemId;
+
+    @JoinColumn(name = "author_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", nullable = false)
-    private User owner;
+    private User author;
 
-    @Column(name = "name", length = 255, nullable = false)
-    private String name;
+    @Column(name = "text", nullable = false)
+    private String text;
 
-    @Column(name = "description", nullable = false)
-    private String description;
-
-    private Boolean available;
-
+    @Column(name = "created", nullable = false)
+    private LocalDateTime created;
 }

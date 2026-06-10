@@ -1,10 +1,11 @@
 package ru.practicum.shareit.item;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.shareit.item.dto.ItemCreateRequest;
-import ru.practicum.shareit.item.dto.ItemResponse;
-import ru.practicum.shareit.item.dto.ItemUpdateRequest;
+import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.model.Item;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @UtilityClass
 public class ItemMapper {
@@ -15,6 +16,23 @@ public class ItemMapper {
         itemResponse.setName(item.getName());
         itemResponse.setDescription(item.getDescription());
         itemResponse.setAvailable(item.getAvailable());
+        return itemResponse;
+    }
+
+    public ItemResponseFull mapToItemResponseFull(
+            Item item,
+            LocalDateTime lastBooking,
+            LocalDateTime nextBooking,
+            List<CommentResponse> comments
+    ) {
+        ItemResponseFull itemResponse = new ItemResponseFull();
+        itemResponse.setId(item.getId());
+        itemResponse.setName(item.getName());
+        itemResponse.setDescription(item.getDescription());
+        itemResponse.setAvailable(item.getAvailable());
+        itemResponse.setLastBooking(lastBooking);
+        itemResponse.setNextBooking(nextBooking);
+        itemResponse.setComments(comments);
         return itemResponse;
     }
 
@@ -36,7 +54,7 @@ public class ItemMapper {
             item.setDescription(itemUpdateRequest.getDescription());
         }
 
-        if (itemUpdateRequest.hasAvailavle()) {
+        if (itemUpdateRequest.hasAvailable()) {
             item.setAvailable(itemUpdateRequest.getAvailable());
         }
 
