@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -102,6 +104,7 @@ public class ItemServiceImpl implements ItemService {
         Collection<Item> items = itemRepository.findByOwnerId(ownerId);
         Sort newestFirst = Sort.by(Sort.Direction.DESC, "start");
         Collection<Booking> bookings = bookingRepository.findAllByItemOwnerId(ownerId, newestFirst);
+        Map<Long, List<CommentResponse>> commentsByItemId = getCommentsForItems(items);
         return items.stream()
                 .map((item) -> {
                     Collection<Booking> itemBookings = bookings.stream()
@@ -109,7 +112,7 @@ public class ItemServiceImpl implements ItemService {
                             .toList();
                     LocalDateTime lastBooking = findLastBookingOfItem(itemBookings, now);
                     LocalDateTime nextBooking = findNextBookingOfItem(itemBookings, now);
-                    List<CommentResponse> comments = getCommentsForItem(item.getId());
+                    List<CommentResponse> comments = commentsByItemId.getOrDefault(item.getId(), List.of());
                     return ItemMapper.mapToItemResponseFull(
                             item,
                             lastBooking,
@@ -198,6 +201,21 @@ public class ItemServiceImpl implements ItemService {
                 .stream()
                 .map(comment -> CommentMapper.mapCommentToCommentResponse(comment, comment.getAuthor().getName()))
                 .toList();
+    }
+
+    private Map<Long, List<CommentResponse>> getCommentsForItems(Collection<Item> items) {
+        List<Long> itemIds = items.stream()
+                .map(Item::getId)
+                .toList();
+
+        if (itemIds.isEmpty()) {
+            return Map.of();
+        }
+
+        return commentRepository.findByItemIdInOrderByCreatedDesc(itemIds)
+                .stream()
+                .map(comment -> CommentMapper.mapCommentToCommentResponse(comment, comment.getAuthor().getName()))
+                .collect(Collectors.groupingBy(CommentResponse::getItemId));
     }
 
 }

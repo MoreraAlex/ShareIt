@@ -58,7 +58,7 @@ public class BookingController {
     @GetMapping
     public Collection<BookingResponse> getBookingsOfUser(
             @RequestHeader("X-Sharer-User-Id") Long userId,
-            @RequestParam(required = false, defaultValue = "ALL") BookingState bookingState
+            @RequestParam(defaultValue = "ALL") BookingState bookingState
     ) {
         log.info(
                 "BookingService: получен запрос на получение бронирований пользователя (userId = {}, bookingState = {})",
@@ -71,7 +71,7 @@ public class BookingController {
     @GetMapping("/owner")
     public Collection<BookingResponse> getBookingsOfOwner(
             @RequestHeader("X-Sharer-User-Id") Long userId,
-            @RequestParam(required = false, defaultValue = "ALL") BookingState bookingState
+            @RequestParam(defaultValue = "ALL") BookingState bookingState
     ) {
         log.info(
                 "BookingService: получен запрос на получение бронирований вещей текущего пользователя (userId = {}, bookingState = {})",

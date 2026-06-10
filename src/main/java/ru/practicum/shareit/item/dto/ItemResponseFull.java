@@ -11,7 +11,7 @@ public class ItemResponseFull {
     private String name;
     private String description;
     private Boolean available;
-    LocalDateTime lastBooking;
-    LocalDateTime nextBooking;
-    List<CommentResponse> comments;
+    private LocalDateTime lastBooking;
+    private LocalDateTime nextBooking;
+    private List<CommentResponse> comments;
 }
