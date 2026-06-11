@@ -77,7 +77,6 @@ public class BaseClient {
             return restTemplate.exchange(path, method, requestEntity, Object.class);
         } catch (HttpStatusCodeException exception) {
             return ResponseEntity.status(exception.getStatusCode())
-                    .headers(exception.getResponseHeaders())
                     .body(exception.getResponseBodyAsString());
         }
     }
